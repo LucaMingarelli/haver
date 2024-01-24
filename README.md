@@ -7,7 +7,7 @@
 
 [//]: # ([![Downloads]&#40;https://static.pepy.tech/personalized-badge/bindata?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads&#41;]&#40;https://pepy.tech/project/bindata&#41;)
 
-
+The **haver** library provides a convenient wrapper to *Haver Analytics*' RESTful API. 
 
 ## Installation
 
