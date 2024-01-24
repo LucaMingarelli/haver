@@ -7,7 +7,7 @@
 from haver.haver import Haver
 
 __about__ = "A Python wrapper to Haver Analytics' RESTful API."
-__version__= '0.0.1'
+__version__= '0.1.0'
 __author__ = 'Luca Mingarelli'
 __email__ = "lucamingarelli@me.com"
 __url__ = "https://github.com/LucaMingarelli/haver"
