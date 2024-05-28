@@ -190,7 +190,7 @@ class Haver:
 
         Examples:
             >>> import haver
-            >>> haver.read(['N997CE@EUDATA','N025CE@EUDATA'])
+            >>> haver.read_df(['N997CE@EUDATA','N025CE@EUDATA'])
         """
 
         if not isinstance(haver_codes, Iterable) or isinstance(haver_codes, str):
