@@ -20,7 +20,7 @@ class Haver:
     _HAVER_URL = 'https://api.haverview.com'
     __NO_TOKEN_WARNING = """
     Invalid or Expired Haver private_token.
-    Please provide a valid token via haver.set_token(<your-token>).
+    Please set as environment variable `HAVER_TOKEN` or initialise haver as  Haver(private_token='<your-token>').
         """
 
     def __init__(self, private_token: Optional[str] = None,
@@ -28,10 +28,6 @@ class Haver:
                  request_kwargs: Union[Dict, None] = None):
         self.__is_active = False
         self._headers = None
-        if 'HAVER_TOKEN' in os.environ:
-            private_token = private_token or self._get_token()
-        if private_token:
-            self.__is_active = self.__test_connection(private_token=private_token)
         self._request_kwargs = dict(headers=self._headers)
         if proxies:
             self._request_kwargs = {**self._request_kwargs, **dict(proxies=proxies)}
@@ -39,17 +35,32 @@ class Haver:
             self._request_kwargs = {**self._request_kwargs, **dict(verify=verify)}
         if request_kwargs:
             self._request_kwargs = {**self._request_kwargs, **request_kwargs}
+        self.__private_token = None
+        self.__private_token = private_token or self._get_token()
+        if self.__private_token:
+            self.__is_active = self.__test_connection(private_token=private_token)
 
+
+
+    def __make_headers(self, private_token):
+        return {'Content-Type': 'application/json',
+                'Authorization': private_token}
+    
+    def __make__request_kwargs(self, headers=None):
+        return {**self._request_kwargs, **dict(headers=headers or self._headers)}
 
     def __test_connection(self, private_token):
-        self._headers = {'Content-Type': 'application/json',
-                         'Authorization': private_token
-                         }
+        _headers = self.__make_headers(private_token=private_token)
+        _request_kwargs = self.__make__request_kwargs(headers=_headers)
         try:
             _active = requests.get('https://api.haverview.com/v2/data/recessions?&per_page=1',
-                                   **self._request_kwargs).status_code == 200
+                                   **_request_kwargs).status_code == 200
         except:
             _active = False
+        if _active:
+            self._headers = _headers
+            self._request_kwargs = _request_kwargs
+
         return _active
 
     def connect(self, private_token: Optional[str] = None):
@@ -63,12 +74,14 @@ class Haver:
             warnings.warn(self.__NO_TOKEN_WARNING)
 
     def _get_token(self):
+        if self.__private_token is not None:
+            return self.__private_token
         if 'HAVER_TOKEN' in os.environ:
             private_token = os.environ['HAVER_TOKEN']
             return private_token
+        
         else:
-            raise ValueError("Haver private token is not set. "
-                             "Please set as haver.set_token(private_token='<your-token>').")
+            warnings.warn(self.__NO_TOKEN_WARNING)
 
     @property
     def _is_connected(self):
@@ -104,14 +117,16 @@ class Haver:
         """
         return requests.get(f'{self._HAVER_URL}/v2/data/databases/{database}', **self._request_kwargs).json()
 
-    def get_series(self, database: str, like: Union[str, None] = None,
+    def get_series(self, database: str, format: str = 'short', 
+                   like: Union[str, None] = None,
                    full_info: bool = False, limit: int = 1000):
         """Returns list of series available in a given database.
 
         Args:
             database: Name of the Haver database.
+            format: Default is 'short': retrieves only series names. Set to 'full' to retrieve information (max elements returned are however capped).
             like: String used to search for similar series names. It does not necessarily need to be an existing series.
-            full_info: Default is `False`, and will return alist of dictionaries with key the series names and description as values. If `True` instead, returns additional information: name, databaseName, datetimeLastModified, startingPeriod, dataPointCount, frequency, magnitude, decimalPrecision, differenceType, aggregationType, dataType, groupName, shortSourceName, sourceName,  description,  geography, geography2, startDate, originalFrequency.
+            full_info: Available only if format='full'. Default is `False`, and will return alist of dictionaries with key the series names and description as values. If `True` instead, returns additional information: name, databaseName, datetimeLastModified, startingPeriod, dataPointCount, frequency, magnitude, decimalPrecision, differenceType, aggregationType, dataType, groupName, shortSourceName, sourceName,  description,  geography, geography2, startDate, originalFrequency.
             limit: Return at most `limit` items.
 
         Returns:
@@ -122,10 +137,12 @@ class Haver:
             >>> haver.get_series(database='USECON', limit=2, full_info=True)
         """
         series = requests.get(
-            f"{self._HAVER_URL}/v3/data/databases/{database}/series?&{f'page={like}' if like else ''}&per_page={limit}",
-            **self._request_kwargs).json()['data']
-        if not full_info:
-            series = {s['name']: s['description'] for s in series}
+            f"{self._HAVER_URL}/v3/data/databases/{database}/series?{f'&format={format}' if format else ''}{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
+            **self._request_kwargs).json()
+        if format == 'full':
+            series = series['data']
+            if not full_info:
+                series = {s['name']: s['description'] for s in series}
         return series
 
     def search(self, query: str):

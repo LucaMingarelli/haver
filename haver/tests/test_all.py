@@ -21,6 +21,7 @@ if haver._is_connected:
             haver.get_databases()
             assert haver.database_info('EPFRBCF')['description'] == 'Country Flows'
             assert 'A111F9SE' in haver.get_series('USECON')
+            haver.get_series('USECON', format='full', like='A111F9S', limit=4)
             haver.search(query='defined')
 
         def test_HAVER_recessions(self):
