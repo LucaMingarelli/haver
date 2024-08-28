@@ -19,11 +19,11 @@ class Haver:
     """
     _HAVER_URL = 'https://api.haverview.com'
     __NO_TOKEN_WARNING = """
-    Invalid or Expired Haver private_token.
-    Please set as environment variable `HAVER_TOKEN` or initialise haver as  Haver(private_token='<your-token>').
+    Invalid or Expired Haver api_key.
+    Please set as environment variable `HAVER_API_KEY` or initialise haver as  Haver(api_key='<your-token>').
         """
 
-    def __init__(self, private_token: Optional[str] = None,
+    def __init__(self, api_key: Optional[str] = None,
                  verify=None, proxies=None,
                  request_kwargs: Union[Dict, None] = None):
         self.__is_active = False
@@ -35,25 +35,25 @@ class Haver:
             self._request_kwargs = {**self._request_kwargs, **dict(verify=verify)}
         if request_kwargs:
             self._request_kwargs = {**self._request_kwargs, **request_kwargs}
-        self.__private_token = None
-        self.__private_token = private_token or self._get_token()
-        if self.__private_token:
-            self.__is_active = self.__test_connection(private_token=private_token)
+        self.__api_key = None
+        self.__api_key = api_key or self._get_token()
+        if self.__api_key:
+            self.__is_active = self.__test_connection(api_key=api_key)
 
 
 
-    def __make_headers(self, private_token):
+    def __make_headers(self, api_key):
         return {'Content-Type': 'application/json',
-                'Authorization': private_token}
+                'X-API-Key': api_key}
     
     def __make__request_kwargs(self, headers=None):
         return {**self._request_kwargs, **dict(headers=headers or self._headers)}
 
-    def __test_connection(self, private_token):
-        _headers = self.__make_headers(private_token=private_token)
+    def __test_connection(self, api_key):
+        _headers = self.__make_headers(api_key=api_key)
         _request_kwargs = self.__make__request_kwargs(headers=_headers)
         try:
-            _active = requests.get('https://api.haverview.com/v2/data/recessions?&per_page=1',
+            _active = requests.get('https://api.haverview.com/v4/data/recessions?&per_page=1',
                                    **_request_kwargs).status_code == 200
         except:
             _active = False
@@ -63,29 +63,29 @@ class Haver:
 
         return _active
 
-    def connect(self, private_token: Optional[str] = None):
+    def connect(self, api_key: Optional[str] = None):
         """Connect with private token.
 
         Args:
-            private_token: Personal access token.
+            api_key: Personal access token.
         """
-        self.__init__(private_token=private_token)
+        self.__init__(api_key=api_key)
         if not self._is_connected:
             warnings.warn(self.__NO_TOKEN_WARNING)
 
     def _get_token(self):
-        if self.__private_token is not None:
-            return self.__private_token
-        if 'HAVER_TOKEN' in os.environ:
-            private_token = os.environ['HAVER_TOKEN']
-            return private_token
+        if self.__api_key is not None:
+            return self.__api_key
+        if 'HAVER_API_KEY' in os.environ:
+            api_key = os.environ['HAVER_API_KEY']
+            return api_key
         
         else:
             warnings.warn(self.__NO_TOKEN_WARNING)
 
     @property
     def _is_connected(self):
-        return self.__test_connection(private_token=self._get_token())
+        return self.__test_connection(api_key=self._get_token())
 
     def get_databases(self) -> Dict:
         """
@@ -98,7 +98,7 @@ class Haver:
             >>> import haver
             >>> haver.get_databases()
         """
-        dbs = requests.get(f'{self._HAVER_URL}/v2/data/databases?&per_page=1000', **self._request_kwargs).json()['data']
+        dbs = requests.get(f'{self._HAVER_URL}/v4/data/databases?&per_page=1000', **self._request_kwargs).json()['data']
         return {db['name']: db['description'] for db in dbs}
 
     def database_info(self, database: str) -> Dict:
@@ -115,7 +115,7 @@ class Haver:
             >>> import haver
             >>> haver.database_info('USECON')
         """
-        return requests.get(f'{self._HAVER_URL}/v2/data/databases/{database}', **self._request_kwargs).json()
+        return requests.get(f'{self._HAVER_URL}/v4/data/databases/{database}', **self._request_kwargs).json()
 
     def get_series(self, database: str, format: str = 'short', 
                    like: Union[str, None] = None,
@@ -137,7 +137,7 @@ class Haver:
             >>> haver.get_series(database='USECON', limit=2, full_info=True)
         """
         series = requests.get(
-            f"{self._HAVER_URL}/v3/data/databases/{database}/series?{f'&format={format}' if format else ''}{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
+            f"{self._HAVER_URL}/v4/database/{database}/series?{f'&format={format}' if format else ''}{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
             **self._request_kwargs).json()
         if format == 'full':
             series = series['data']
@@ -158,7 +158,7 @@ class Haver:
             >>> import haver
             >>> haver.search(query='employment')
         """
-        search_res = requests.get(f"{self._HAVER_URL}/v2/data/search?query={query}",
+        search_res = requests.get(f"{self._HAVER_URL}/v4/data/search?query={query}",
                              **self._request_kwargs).json()
         return search_res
 
@@ -166,7 +166,7 @@ class Haver:
         """
         Returns all available recessions with associated start and end dates, and country.
         """
-        rec = requests.get(f"{self._HAVER_URL}/v2/data/recessions?&per_page=1000",
+        rec = requests.get(f"{self._HAVER_URL}/v4/data/recessions?&per_page=1000",
                       **self._request_kwargs).json()['data']
         return pd.DataFrame(rec).drop(columns='index')
 
@@ -190,7 +190,7 @@ class Haver:
             raise ValueError(f"The argument 'haver_codes' must be a string, instead {type(database)} was passed.")
 
         # Put the URL for the Haver View API call together
-        API_URL = f'{self._HAVER_URL}/v2/data/databases/{database}/series/{series}'
+        API_URL = f'{self._HAVER_URL}/v4/database/{database}/series/{series}'
 
         # Run the API call and get content in JSON format
         content_json = requests.get(API_URL, **self._request_kwargs).json()
@@ -246,7 +246,7 @@ class Haver:
 
 if __name__ == '__main__':
     import os
-    haver = Haver(private_token=os.getenv('HAVER_TOKEN'))
+    haver = Haver(api_key=os.getenv('HAVER_API_KEY'))
     haver.get_series(database='EUDATA')
     tt = haver.read_df(haver_codes=['N997CE@EUDATA', 'N025CE@EUDATA'])
 

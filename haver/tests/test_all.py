@@ -8,7 +8,7 @@
 from haver import Haver
 import os
 
-haver = Haver(private_token=os.getenv('HAVER_TOKEN'))
+haver = Haver(api_key=os.getenv('HAVER_API_KEY'))
 
 
 if haver._is_connected:

@@ -20,7 +20,7 @@ The **haver** library provides a convenient wrapper to *Haver Analytics*' RESTfu
 ```python
 from haver import Haver
 
-haver = Haver(private_token='<your-haver-API-token>')
+haver = Haver(api_key='<your-haver-API-token>')
 ```
 
 The class `Haver` also accepts keyword arguments to be passed to requests, 
@@ -28,30 +28,19 @@ which handles the connection to the API under the hood. In this way,
 by passing e.g. `verify` and `proxy` parameters, users can access Haver databases from behind firewalls.
 For example:
 ```python
-haver = Haver(private_token='<your-haver-API-token>',
+haver = Haver(api_key='<your-haver-API-key>',
               verify=False, # Or local path to certificates 
               proxies={'http': 'http://proxy-username:proxy-password@proxy-server.com:8080',
                        'https': 'http://proxy-username:proxy-password@proxy-server.com:8080'})
 ```
 
-Instead of passing the token explicitely each time, 
-the user can also set an environmental variable `HAVER_TOKEN` containing the API token. 
+Instead of passing the API key explicitely each time, 
+the user can also set an environmental variable `HAVER_TOKEN` containing the API key. 
 In this case connection will be as simple as 
 `haver = Haver()`.
 
-#### Obtaining tokens
-To obtain your token, follow these steps:
-
-* Log into haverview.com, then create a graph with any series.
-* Click the vertical dots next to the Directory and Series tabs, above the search box.
-* Select Export & Sharing in that menu. This will replace the left tab with the Export dialog.
-* Copy the contents of the URL field. It is a link which contains your token, specified as a query parameter
-
-E.g. from 
-```
-https://api.haverview.com/some/path/here?token=3f15493a-9e05-4b61-93ff-8ba56cb3a726
-```
-your token would be `3f15493a-9e05-4b61-93ff-8ba56cb3a726`.
+#### Obtaining your API Key
+You can find your API key at [this link](https://impala.haverview.com/).
 
 
 ## Exploring available resources
