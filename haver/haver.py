@@ -55,7 +55,7 @@ class Haver:
         _headers = self.__make_headers(api_key=api_key)
         _request_kwargs = self.__make__request_kwargs(headers=_headers)
         try:
-            _active = requests.get('https://api.haverview.com/v4/data/recessions?&per_page=1',
+            _active = requests.get('https://api.haverview.com/v4/docs',
                                    **_request_kwargs).status_code == 200
         except:
             _active = False
