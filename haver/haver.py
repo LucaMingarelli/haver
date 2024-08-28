@@ -1,6 +1,8 @@
 """  Created on 24/01/2024::
 ------------- haver.py -------------
  
+DOCS at https://api.haverview.com/v4/docs
+
 **Authors**: L. Mingarelli
 """
 
