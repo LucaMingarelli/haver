@@ -115,7 +115,7 @@ class Haver:
             >>> import haver
             >>> haver.database_info('USECON')
         """
-        return requests.get(f'{self._HAVER_URL}/v4/data/databases/{database}', **self._request_kwargs).json()
+        return requests.get(f'{self._HAVER_URL}/v4/database/{database}/series?&per_page=1', **self._request_kwargs).json()['data'][0]['description']
 
     def get_series(self, database: str, format: str = 'short', 
                    like: Union[str, None] = None,
