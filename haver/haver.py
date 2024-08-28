@@ -98,7 +98,7 @@ class Haver:
             >>> import haver
             >>> haver.get_databases()
         """
-        dbs = requests.get(f'{self._HAVER_URL}/v4/data/databases?&per_page=1000', **self._request_kwargs).json()['data']
+        dbs = requests.get(f'{self._HAVER_URL}/v4/database?&per_page=1000', **self._request_kwargs).json()
         return {db['name']: db['description'] for db in dbs}
 
     def database_info(self, database: str) -> Dict:
