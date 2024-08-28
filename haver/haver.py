@@ -117,18 +117,17 @@ class Haver:
             >>> import haver
             >>> haver.database_info('USECON')
         """
-        return requests.get(f'{self._HAVER_URL}/v4/database/{database}/series?&per_page=1', **self._request_kwargs).json()['data'][0]['description']
+        return requests.get(f'{self._HAVER_URL}/v4/database/{database}/series?&per_page=1', **self._request_kwargs).json()['data'][0]
 
-    def get_series(self, database: str, format: str = 'short', 
+    def get_series(self, database: str,
                    like: Union[str, None] = None,
                    full_info: bool = False, limit: int = 1000):
         """Returns list of series available in a given database.
 
         Args:
             database: Name of the Haver database.
-            format: Default is 'short': retrieves only series names. Set to 'full' to retrieve information (max elements returned are however capped).
             like: String used to search for similar series names. It does not necessarily need to be an existing series.
-            full_info: Available only if format='full'. Default is `False`, and will return alist of dictionaries with key the series names and description as values. If `True` instead, returns additional information: name, databaseName, datetimeLastModified, startingPeriod, dataPointCount, frequency, magnitude, decimalPrecision, differenceType, aggregationType, dataType, groupName, shortSourceName, sourceName,  description,  geography, geography2, startDate, originalFrequency.
+            full_info: Default is `False`, and will return alist of dictionaries with key the series names and description as values. If `True` instead, returns additional information: name, databaseName, datetimeLastModified, startingPeriod, dataPointCount, frequency, magnitude, decimalPrecision, differenceType, aggregationType, dataType, groupName, shortSourceName, sourceName,  description,  geography, geography2, startDate, originalFrequency.
             limit: Return at most `limit` items.
 
         Returns:
@@ -139,12 +138,10 @@ class Haver:
             >>> haver.get_series(database='USECON', limit=2, full_info=True)
         """
         series = requests.get(
-            f"{self._HAVER_URL}/v4/database/{database}/series?{f'&format={format}' if format else ''}{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
+            f"{self._HAVER_URL}/v4/database/{database}/series?{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
             **self._request_kwargs).json()
-        if format == 'full':
-            series = series['data']
-            if not full_info:
-                series = {s['name']: s['description'] for s in series}
+        if not full_info:
+            series = {s['name']: s['description'] for s in series['data']}
         return series
 
     def search(self, query: str):
