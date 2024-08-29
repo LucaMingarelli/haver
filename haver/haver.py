@@ -14,7 +14,7 @@ import os, warnings
 import pandas as pd
 from collections.abc import Iterable
 from typing import Optional, Union, Dict
-
+from functools import lru_cache
 
 class Haver:
     """Implementation of the Haver View REST API.
@@ -119,17 +119,17 @@ class Haver:
         """
         return requests.get(f'{self._HAVER_URL}/v4/database/{database}/series?&per_page=1', **self._request_kwargs).json()['data'][0]
 
+    @lru_cache
     def get_series(self, database: str,
                    like: Union[str, None] = None,
-                   full_info: bool = False, limit: int = 1000):
+                   full_info: bool = False):
         """Returns list of series available in a given database.
+        This function may take a while to run.
 
         Args:
             database: Name of the Haver database.
-            like: String used to search for similar series names. It does not necessarily need to be an existing series.
+            like: String used to search for similar series names. It does not necessarily need to be an existing series. In this case results are limited to the first 1000.
             full_info: Default is `False`, and will return alist of dictionaries with key the series names and description as values. If `True` instead, returns additional information: name, databaseName, datetimeLastModified, startingPeriod, dataPointCount, frequency, magnitude, decimalPrecision, differenceType, aggregationType, dataType, groupName, shortSourceName, sourceName,  description,  geography, geography2, startDate, originalFrequency.
-            limit: Return at most `limit` items.
-
         Returns:
             Dict or List[Dict]
 
@@ -137,11 +137,25 @@ class Haver:
             >>> import haver
             >>> haver.get_series(database='USECON', limit=2, full_info=True)
         """
-        series = requests.get(
-            f"{self._HAVER_URL}/v4/database/{database}/series?{f'&page={like}' if like else ''}{f'&per_page={limit}' if limit else ''}",
-            **self._request_kwargs).json()
+        def _get_series_page(page=None):
+            series = requests.get(
+                f"{self._HAVER_URL}/v4/database/{database}/series?{f'&page={page}' if page else ''}&per_page=1000",
+                **self._request_kwargs).json()['data']
+            return series
+        if like:
+            series = _get_series_page(page=like)
+        else:
+            series = _get_series_page()
+            add_series = [series]
+            while len(series)==1000:
+                page = series[-1]['name']
+                series = _get_series_page(page=page)
+                # print(page)
+                add_series.append([s for s in series if s['name']!=page])
+            series = sum(add_series, [])
+
         if not full_info:
-            series = {s['name']: s['description'] for s in series['data']}
+            series = {s['name']: s['description'] for s in series}
         return series
 
     def search(self, query: str):

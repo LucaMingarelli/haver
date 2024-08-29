@@ -20,7 +20,7 @@ if haver._is_connected:
             haver.get_databases()
             assert haver.database_info('EPFRBCF')['description'] == 'Bond Country Flows: ETFs/Mutu Fnd: Africa: Est Ending Alloc (EOP, Mil. US$)'
             assert 'A111F9SE' in haver.get_series('USECON')
-            haver.get_series('USECON', like='A111F9S', limit=4, full_info=False)
+            haver.get_series('USECON', like='A111F9S', full_info=False)
             # haver.search(query='defined')
 
         def test_HAVER_recessions(self):
