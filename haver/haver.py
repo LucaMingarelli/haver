@@ -20,9 +20,9 @@ class Haver:
     """Implementation of the Haver View REST API.
     """
     _HAVER_URL = 'https://api.haverview.com'
-    __NO_TOKEN_WARNING = """
+    __NO_APIKEY_WARNING = """
     Invalid or Expired Haver api_key.
-    Please set as environment variable `HAVER_API_KEY` or initialise haver as  Haver(api_key='<your-token>').
+    Please set as environment variable `HAVER_API_KEY` or initialise haver as  Haver(api_key='<your-api-key>').
         """
 
     def __init__(self, api_key: Optional[str] = None,
@@ -38,7 +38,7 @@ class Haver:
         if request_kwargs:
             self._request_kwargs = {**self._request_kwargs, **request_kwargs}
         self.__api_key = None
-        self.__api_key = api_key or self._get_token()
+        self.__api_key = api_key or self._get_apikey()
         if self.__api_key:
             self.__is_active = self.__test_connection(api_key=api_key)
 
@@ -66,16 +66,16 @@ class Haver:
         return _active
 
     def connect(self, api_key: Optional[str] = None):
-        """Connect with private token.
+        """Connect with private API key.
 
         Args:
-            api_key: Personal access token.
+            api_key: Personal access API key.
         """
         self.__init__(api_key=api_key)
         if not self._is_connected:
-            warnings.warn(self.__NO_TOKEN_WARNING)
+            warnings.warn(self.__NO_APIKEY_WARNING)
 
-    def _get_token(self):
+    def _get_apikey(self):
         if self.__api_key is not None:
             return self.__api_key
         if 'HAVER_API_KEY' in os.environ:
@@ -83,11 +83,11 @@ class Haver:
             return api_key
         
         else:
-            warnings.warn(self.__NO_TOKEN_WARNING)
+            warnings.warn(self.__NO_APIKEY_WARNING)
 
     @property
     def _is_connected(self):
-        return self.__test_connection(api_key=self._get_token())
+        return self.__test_connection(api_key=self._get_apikey())
 
     def get_databases(self) -> Dict:
         """
