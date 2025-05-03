@@ -1,7 +1,9 @@
 .*
+*.pyc
 .idea
 build
-*.egg.info
+dist
+*.egg-info
 !.gitignore
-__pychache__/
+*/__pychache__
 scratch_TEMP.py
