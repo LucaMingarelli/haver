@@ -21,7 +21,7 @@ setuptools.setup(
     author_email=haver.__email__,
     description=haver.__about__,
     url=haver.__url__,
-    license='MIT',
+    license='CC BY-NC-SA 4.0',
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=['haver', 'haver.tests', 'haver.res'],
