@@ -39,7 +39,7 @@ haver = Haver(api_key='<your-haver-API-key>',
 ```
 
 Instead of passing the API key explicitely each time, 
-the user can also set an environmental variable `HAVER_TOKEN` containing the API key. 
+the user can also set an environmental variable `HAVER_API_KEY` containing the API key. 
 In this case connection will be as simple as 
 `haver = Haver()`.
 
