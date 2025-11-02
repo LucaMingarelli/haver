@@ -31,17 +31,18 @@ class Haver:
         self.__is_active = False
         self._headers = None
         self._request_kwargs = dict(headers=self._headers)
+
         if proxies:
             self._request_kwargs = {**self._request_kwargs, **dict(proxies=proxies)}
         if verify:
             self._request_kwargs = {**self._request_kwargs, **dict(verify=verify)}
         if request_kwargs:
             self._request_kwargs = {**self._request_kwargs, **request_kwargs}
+        
         self.__api_key = None
         self.__api_key = api_key or self._get_apikey()
         if self.__api_key:
-            self.__is_active = self.__test_connection(api_key=api_key)
-
+            self.__is_active = self.__test_connection(api_key=self.__api_key)
 
 
     def __make_headers(self, api_key):
@@ -76,12 +77,11 @@ class Haver:
             warnings.warn(self.__NO_APIKEY_WARNING)
 
     def _get_apikey(self):
-        if self.__api_key is not None:
-            return self.__api_key
-        if 'HAVER_API_KEY' in os.environ:
-            api_key = os.environ['HAVER_API_KEY']
+        api_key = os.getenv('HAVER_API_KEY')
+        if api_key:
             return api_key
-        
+        elif self.__api_key is not None:
+            return self.__api_key
         else:
             warnings.warn(self.__NO_APIKEY_WARNING)
 
@@ -135,7 +135,7 @@ class Haver:
 
         Examples:
             >>> import haver
-            >>> haver.get_series(database='USECON', limit=2, full_info=True)
+            >>> haver.get_series(database='USECON', full_info=True)
         """
         def _get_series_page(page=None):
             series = requests.get(
