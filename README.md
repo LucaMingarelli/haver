@@ -3,7 +3,7 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LucaMingarelli/haver/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LucaMingarelli/haver/tree/master)
 [![version](https://img.shields.io/badge/version-0.8.0-success.svg)](#)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/haver.svg)](https://pypi.org/project/haver/)
-[![License](https://img.shields.io/pypi/l/bindata.svg)](https://github.com/LucaMingarelli/haver/blob/master/LICENSE.md)
+[![License](https://img.shields.io/pypi/l/haver.svg)](https://github.com/LucaMingarelli/haver/blob/master/LICENSE.md)
 [![Downloads](https://static.pepy.tech/badge/haver)](https://pepy.tech/project/haver)
 <a href="https://www.buymeacoffee.com/lucamingarelli" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 109px !important;" ></a>
 
