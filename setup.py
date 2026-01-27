@@ -15,7 +15,7 @@ with open("requirements.txt") as f:
 
 
 setuptools.setup(
-    name="haver",
+    name="haver-api",
     version=haver.__version__,
     author=haver.__author__,
     author_email=haver.__email__,
