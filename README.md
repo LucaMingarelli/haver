@@ -2,6 +2,7 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LucaMingarelli/haver/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LucaMingarelli/haver/tree/master)
 [![version](https://img.shields.io/badge/version-0.8.0-success.svg)](#)
+
 [![PyPI Latest Release](https://img.shields.io/pypi/v/haver-api.svg)](https://pypi.org/project/haver-api/)
 [![License](https://img.shields.io/pypi/l/haver.svg)](https://github.com/LucaMingarelli/haver-api/blob/master/LICENSE.md)
 [![Downloads](https://static.pepy.tech/badge/haver-api)](https://pepy.tech/project/haver-api)
@@ -110,4 +111,4 @@ haver.recessions()
 
 
 # Author
-Luca Mingarelli, 2021
+Luca Mingarelli, 2018
