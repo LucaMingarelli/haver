@@ -2,9 +2,10 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LucaMingarelli/haver/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LucaMingarelli/haver/tree/master)
 [![version](https://img.shields.io/badge/version-0.8.0-success.svg)](#)
-[![PyPI Latest Release](https://img.shields.io/pypi/v/haver.svg)](https://pypi.org/project/haver/)
-[![License](https://img.shields.io/pypi/l/haver.svg)](https://github.com/LucaMingarelli/haver/blob/master/LICENSE.md)
-[![Downloads](https://static.pepy.tech/badge/haver)](https://pepy.tech/project/haver)
+
+[![PyPI Latest Release](https://img.shields.io/pypi/v/haver-api.svg)](https://pypi.org/project/haver-api/)
+[![License](https://img.shields.io/pypi/l/haver.svg)](https://github.com/LucaMingarelli/haver-api/blob/master/LICENSE.md)
+[![Downloads](https://static.pepy.tech/badge/haver-api)](https://pepy.tech/project/haver-api)
 <a href="https://www.buymeacoffee.com/lucamingarelli" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 109px !important;" ></a>
 
 [//]: # ([![Downloads]&#40;https://static.pepy.tech/personalized-badge/bindata?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads&#41;]&#40;https://pepy.tech/project/bindata&#41;)
@@ -17,7 +18,13 @@ If you encounter any issue or have suggestions for improvements, please feel fre
 
 ## Installation
 
-`pip install haver`
+`pip install haver-api`
+
+# ❗❗❗ Notice ❗❗❗ 
+# The ownership of the old haver domain on PyPi (installable as `pip install haver`) has been passed on to Haver Analytics. 
+## In order to install this library you now need to use the command above. 
+## Running `pip install haver` will now install Haver Analytics' library
+
 
 # How to
 
