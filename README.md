@@ -1,4 +1,4 @@
-# haver <img src="https://raw.githubusercontent.com/LucaMingarelli/haver/master/haver/res/haver.jpg"  width="80">
+# haver-api <img src="https://raw.githubusercontent.com/LucaMingarelli/haver/master/haver/res/haver.jpg"  width="80">
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LucaMingarelli/haver/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LucaMingarelli/haver/tree/master)
 [![version](https://img.shields.io/badge/version-0.8.0-success.svg)](#)
