@@ -23,7 +23,7 @@ If you encounter any issue or have suggestions for improvements, please feel fre
 # ❗❗❗ Notice ❗❗❗ 
 # The ownership of the old haver domain on PyPi (installable as `pip install haver`) has been passed on to Haver Analytics. 
 ## In order to install this library you now need to use the command above. 
-## Running `pip install haver` will now install Haver Analytics' library
+## Running `pip install haver` will soon install Haver Analytics' library
 
 
 # How to
