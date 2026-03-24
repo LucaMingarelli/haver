@@ -5,7 +5,7 @@
 """
 
 HAVER_COUNTRIES = {code: {'alpha2': a2, 'name': name}
-                   for code, a2, name in zip(('512', '914', '612', '859', '171', '614', '312', '311', '213', '911',
+                   for code, a2, name in zip(('100', '512', '914', '612', '859', '171', '614', '312', '311', '213', '911',
                                               '314', '193', '122', '912', '313', '419', '513', '316', '913', '124',
                                               '126', '339', '638', '319', '514', '218', '963', '616', '223', '585',
                                               '889', '371', '516', '918', '748', '618', '522', '622', '156', '624',
@@ -32,7 +32,7 @@ HAVER_COUNTRIES = {code: {'alpha2': a2, 'name': name}
                                               '869', '373', '746', '926', '466', '112', '111', '877', '298', '870',
                                               '927', '846', '187', '299', '582', '857', '131', '265', '793', '473',
                                               '474', '188', '754', '698'),
-                                             ('AF', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AG', 'AR', 'AM', 'AW', 'AU',
+                                             ('EU', 'AF', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AG', 'AR', 'AM', 'AW', 'AU',
                                               'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'Not available', 'BZ',
                                               'BJ', 'BM', 'BT', 'BO', 'BA', 'BW', 'BR', 'IO', 'Not available', 'VG',
                                               'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'KY', 'CF', 'TD',
@@ -58,7 +58,7 @@ HAVER_COUNTRIES = {code: {'alpha2': a2, 'name': name}
                                               'TC', 'TV', 'VI', 'UG', 'UA', 'AE', 'GB', 'US', 'UM', 'UY', 'UM', 'UZ',
                                               'VU', 'Not available', 'VE', 'VN', 'WF', 'Not available', 'Not available',
                                               'EH', 'Not available', 'YE', 'Not available', 'ZM', 'ZW'),
-                                             (
+                                             ('Europe',
                                              'Afghanistan', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola',
                                              'Anguilla', 'Antigua & Barbuda', 'Argentina', 'Armenia', 'Aruba',
                                              'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh',
