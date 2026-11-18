@@ -228,7 +228,7 @@ class Haver:
                 f"The argument 'haver_codes' should be a list-like iterable, instead {type(haver_codes)} was received.")
 
         # Loop through the list of Haver codes
-        df_final = pd.DataFrame()
+        df_list: list[pd.DataFrame] = []
         for haver_code in haver_codes:
             series, database = haver_code.split(sep='@')
 
@@ -247,8 +247,11 @@ class Haver:
             df['country_name'] = a2['name'] if a2 is not None else None
             df['database'] = database.lower()
 
-            # Append to final dataframe
-            df_final = pd.concat([df_final, df])
+            # Append to dataframe list
+            df_list.append(df)
+
+        # combine collected dataframes
+        df_final = pd.concat(df_list, ignore_index=True)
 
         # Rearrange columns
         df_final = df_final[['date', 'country', 'country_alpha2',
